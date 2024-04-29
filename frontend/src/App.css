@@ -19,7 +19,7 @@
   justify-content: space-between !important;
 }
 
-.btn-delete {
+.modal-delete {
   background-color: #e75414 !important;
   color: white !important;
 }
@@ -146,4 +146,35 @@
   background-color: #c7e6f4;
   color: #09053e;
   font-size: larger;
+}
+
+/* alert */
+
+.container-alert {
+  display: flex;
+  justify-content: center !important;
+  align-items: center !important;
+}
+.alert-success {
+  display: flex;
+  justify-content: center;
+  width: 550px;
+  height: 48px;
+  background: #73ca5c;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 16px;
+}
+.alert-dark {
+  display: flex;
+  justify-content: center;
+  width: 550px;
+  height: 48px;
+  background: #151515;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 16px;
 }

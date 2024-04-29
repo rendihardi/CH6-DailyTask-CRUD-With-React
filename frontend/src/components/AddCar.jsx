@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Error from "./Error.jsx";
 import Loading from "./Loading.jsx";
+import HomeImg from "./../assets/fi_menu.svg";
 
 function AddCar() {
   const [photo, setPhoto] = useState(null); // State untuk menyimpan file gambar
@@ -34,7 +35,7 @@ function AddCar() {
       console.log("Response:", response);
       setLoading(false); // Set state loading menjadi false setelah selesai memproses
       if (response.status === 200) {
-        navigate("/");
+        navigate("/", { state: { flashMsg: "Added" } });
       }
     } catch (error) {
       setLoading(false); // Set state loading menjadi false jika terjadi kesalahan
@@ -53,107 +54,127 @@ function AddCar() {
   };
 
   return (
-    <Container className="container-form" style={{ marginTop: "90px" }}>
-      <form id="myForm" onSubmit={saveCar}>
-        <div className="container-form2">
-          <div className="row pt-4" style={{ fontSize: "14px" }}>
-            <div className="col-md-3">
-              <label htmlFor="name">Nama*</label>
-            </div>
-            <div className="col-md-6">
-              <input
-                type="text"
-                id="name"
-                className="col-text"
-                placeholder="Nama/Tipe Mobil"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
+    <>
+      {/* Header */}
+      <Container className="container-header" style={{ marginTop: "90px" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <div>
+            <h4>
+              {" "}
+              <img src={HomeImg} alt="Home" /> Add New Car
+            </h4>
           </div>
-          <div className="row pt-4" style={{ fontSize: "14px" }}>
-            <div className="col-md-3">
-              <label htmlFor="price">Sewa Per Hari*</label>
-            </div>
-            <div className="col-md-6">
-              <input
-                type="number"
-                id="price"
-                className="col-text"
-                placeholder="Rp.0"
-                required
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="row pt-4" style={{ fontSize: "14px" }}>
-            <div className="col-md-3">
-              <label htmlFor="size">Ukuran*</label>
-            </div>
-            <div className="col-md-6">
-              <select
-                id="size"
-                className="col-text"
-                value={size}
-                onChange={(e) => setSize(e.target.value)}
-              >
-                <option value="small">Small</option>
-                <option value="medium">Medium</option>
-                <option value="large">Large</option>
-              </select>
-            </div>
-          </div>
-          <div className="row pt-4" style={{ fontSize: "14px" }}>
-            <div className="col-md-3">
-              <label htmlFor="photo">Foto*</label>
-            </div>
-            <div className="col-md-6">
-              <label className="custom-file-upload">
+        </div>
+      </Container>
+
+      {/* Form */}
+      <Container className="container-form" style={{ marginTop: "50px" }}>
+        <form id="myForm" onSubmit={saveCar}>
+          <div className="container-form2">
+            <div className="row pt-4" style={{ fontSize: "14px" }}>
+              <div className="col-md-3">
+                <label htmlFor="name">Nama*</label>
+              </div>
+              <div className="col-md-6">
                 <input
-                  type="file"
-                  id="photo"
-                  accept="image/*"
+                  type="text"
+                  id="name"
+                  className="col-text"
+                  placeholder="Nama/Tipe Mobil"
                   required
-                  onChange={handleFileChange} // Menggunakan fungsi handleFileChange untuk menangani perubahan file
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
-                <img
-                  className="justify-content-end"
-                  src={UploadImg}
-                  alt="Upload Image"
-                />
-              </label>
-              <p style={{ fontSize: "12px", color: "#646464" }}>
-                File size max 2 Mb
-              </p>
-              {/* Menampilkan preview gambar */}
-              {previewPhoto && (
-                <div>
-                  <img
-                    src={previewPhoto}
-                    alt="Preview"
-                    style={{ maxWidth: "100px", maxHeight: "100px" }}
-                  />
-                </div>
-              )}
+              </div>
             </div>
+            <div className="row pt-4" style={{ fontSize: "14px" }}>
+              <div className="col-md-3">
+                <label htmlFor="price">Sewa Per Hari*</label>
+              </div>
+              <div className="col-md-6">
+                <input
+                  type="number"
+                  id="price"
+                  className="col-text"
+                  placeholder="Rp.0"
+                  required
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="row pt-4" style={{ fontSize: "14px" }}>
+              <div className="col-md-3">
+                <label htmlFor="size">Ukuran*</label>
+              </div>
+              <div className="col-md-6">
+                <select
+                  id="size"
+                  className="col-text"
+                  value={size}
+                  onChange={(e) => setSize(e.target.value)}
+                >
+                  <option value="small">Small</option>
+                  <option value="medium">Medium</option>
+                  <option value="large">Large</option>
+                </select>
+              </div>
+            </div>
+            <div className="row pt-4" style={{ fontSize: "14px" }}>
+              <div className="col-md-3">
+                <label htmlFor="photo">Foto*</label>
+              </div>
+              <div className="col-md-6">
+                <label className="custom-file-upload">
+                  <input
+                    type="file"
+                    id="photo"
+                    accept="image/*"
+                    required
+                    onChange={handleFileChange} // Menggunakan fungsi handleFileChange untuk menangani perubahan file
+                  />
+                  <img
+                    className="justify-content-end"
+                    src={UploadImg}
+                    alt="Upload Image"
+                  />
+                </label>
+                <p style={{ fontSize: "12px", color: "#646464" }}>
+                  File size max 2 Mb
+                </p>
+                {/* Menampilkan preview gambar */}
+                {previewPhoto && (
+                  <div>
+                    <img
+                      src={previewPhoto}
+                      alt="Preview"
+                      style={{ maxWidth: "100px", maxHeight: "100px" }}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* Menampilkan Spinner saat loading */}
+            {loading && <Loading />}
           </div>
-          {/* Menampilkan Spinner saat loading */}
-          {loading && <Loading />}
-        </div>
-        <div className="button-cu mt-5 mt-5">
-          <a href="/">
-            <button className="cancel-btn" type="button" form="myForm">
-              Cancel
+          <div className="button-cu mt-5 mt-5">
+            <a href="/">
+              <button className="cancel-btn" type="button" form="myForm">
+                Cancel
+              </button>
+            </a>
+            <button className="save-btn" type="submit" form="myForm">
+              Save
             </button>
-          </a>
-          <button className="save-btn" type="submit" form="myForm">
-            Save
-          </button>
-        </div>
-      </form>
-    </Container>
+          </div>
+        </form>
+      </Container>
+    </>
   );
 }
 

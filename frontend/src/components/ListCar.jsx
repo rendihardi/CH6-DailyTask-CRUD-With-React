@@ -5,16 +5,23 @@ import HomeImg from "./../assets/fi_menu.svg";
 import { Link } from "react-router-dom";
 import Error from "./Error.jsx";
 import Loading from "./Loading.jsx";
+import ModalDelete from "./ModalDelete.jsx";
+import FlashMessage from "./FlashMessage.jsx";
+import { useLocation } from "react-router-dom";
 
 function ListCars() {
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true); // Tambahkan state loading
   const [error, setError] = useState();
+  const [selectedCarId, setSelectedCarId] = useState(null);
+  const location = useLocation();
+  const flashMsg = location.state?.flashMsg; // Mengambil flashMsg dari location state
 
   useEffect(() => {
     getCars();
   }, []);
 
+  // Function GetCars
   const getCars = async () => {
     try {
       const response = await axios.get("http://localhost:3000/api/v1/cars");
@@ -31,16 +38,7 @@ function ListCars() {
     return <Error title="An error occured!" message={error.message} />;
   }
 
-  const deleteCar = async (id) => {
-    try {
-      await axios.delete(`http://localhost:3000/api/v1/cars/${id}`);
-      getCars();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // Fungsi untuk memformat tanggal
+  // Function format date
   const formatDate = (dateString) => {
     const options = {
       day: "numeric",
@@ -56,15 +54,20 @@ function ListCars() {
     return formattedDate;
   };
 
-  // Fungsi untuk memformat harga
+  // Function format price
   const formatPrice = (price) => {
     return "Rp." + price.toLocaleString("id-ID") + " / hari";
+  };
+
+  const handleCloseModal = () => {
+    setSelectedCarId(null); // Reset selectedCarId setelah modal tertutup
   };
 
   return (
     <>
       {/* Header */}
       <Container className="container-header" style={{ marginTop: "90px" }}>
+        {flashMsg && <FlashMessage flashMsg={flashMsg} />}
         <div
           style={{
             display: "flex",
@@ -133,13 +136,14 @@ function ListCars() {
                     </Card.Text>
                     <div style={{ display: "flex", justifyContent: "center" }}>
                       <div style={{ marginRight: "15px" }}>
-                        <Button
-                          onClick={() => deleteCar(car.id)}
-                          className="btn-delete"
-                          variant="danger"
-                        >
-                          Delete
-                        </Button>
+                        <ModalDelete
+                          className="modal-delete"
+                          picCarId={selectedCarId}
+                          carId={car.id}
+                          onClose={handleCloseModal} // Callback untuk menutup modal
+                          getCars={getCars} // Melewatkan properti getCars
+                          flashMsg="Deleted"
+                        />
                       </div>
                       <div>
                         <Link to={`update/${car.id}`}>
