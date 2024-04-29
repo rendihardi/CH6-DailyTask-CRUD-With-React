@@ -3,11 +3,12 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
 import Error from "./Error.jsx";
+import { useNavigate } from "react-router-dom";
 
 function ModalDelete({ carId, onClose }) {
   const [show, setShow] = useState(false);
   const [error, setError] = useState();
-
+  const navigate = useNavigate();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -18,8 +19,8 @@ function ModalDelete({ carId, onClose }) {
       );
       handleClose(); // Tutup modal setelah hapus berhasil
       if (response.status === 200) {
-        localStorage.setItem("flashMsg", "Deleted"); // Simpan pesan flash di local storage
-        window.location.reload(); // Refresh halaman untuk memperbarui daftar mobil
+        navigate("/", { state: { flashMsg: "Deleted" } });
+        window.location.reload();
       }
     } catch (error) {
       setError(error);
