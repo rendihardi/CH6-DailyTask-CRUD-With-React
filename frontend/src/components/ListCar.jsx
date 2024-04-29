@@ -11,14 +11,19 @@ import { useLocation } from "react-router-dom";
 
 function ListCars() {
   const [cars, setCars] = useState([]);
-  const [loading, setLoading] = useState(true); // Tambahkan state loading
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
   const [selectedCarId, setSelectedCarId] = useState(null);
   const location = useLocation();
-  const flashMsg = location.state?.flashMsg; // Mengambil flashMsg dari location state
+  const [flashMsg, setFlashMsg] = useState(null); // State untuk pesan flash
 
   useEffect(() => {
     getCars();
+    // Bersihkan pesan flash saat komponen dibongkar (unmount)
+    return () => {
+      clearFlashMsg();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Function GetCars
@@ -29,11 +34,24 @@ function ListCars() {
       const sortedCars = response.data.data.cars.sort((a, b) => a.id - b.id);
       setCars(sortedCars);
       setLoading(false); // Set loading menjadi false setelah data diterima
+
+      // Set pesan flash jika ada
+      const msg = location.state?.flashMsg;
+      if (msg) {
+        setFlashMsg(msg);
+        window.history.replaceState(null, "");
+      }
     } catch (error) {
       console.log(error);
       setError(error);
     }
   };
+
+  // Hapus pesan flash saat komponen unmount
+  const clearFlashMsg = () => {
+    setFlashMsg(null);
+  };
+
   if (error) {
     return <Error title="An error occured!" message={error.message} />;
   }

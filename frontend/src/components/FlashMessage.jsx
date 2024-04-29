@@ -15,7 +15,11 @@ function FlashMessage({ flashMsg, onClose }) {
 
   // Cek nilai flashMsg dan tentukan jenis alert berdasarkan nilai
   const alertVariant =
-    flashMsg === "Added" || flashMsg === "Updated" ? "success" : "dark";
+    flashMsg === "Added" || flashMsg === "Updated"
+      ? "success"
+      : flashMsg === "Deleted"
+      ? "dark"
+      : "";
 
   return (
     <>
