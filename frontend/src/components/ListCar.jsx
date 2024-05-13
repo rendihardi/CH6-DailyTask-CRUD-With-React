@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Container, Button, Card } from "react-bootstrap";
-import HomeImg from "./../assets/fi_menu.svg";
 import { Link } from "react-router-dom";
 import Error from "./Error.jsx";
 import Loading from "./Loading.jsx";
@@ -53,7 +52,7 @@ function ListCars() {
   };
 
   if (error) {
-    return <Error title="An error occured!" message={error.message} />;
+    return <Error title="Failed To Fetch Data" message={error.message} />;
   }
 
   // Function format date
@@ -84,35 +83,8 @@ function ListCars() {
   return (
     <>
       {/* Header */}
-      <Container className="container-header" style={{ marginTop: "90px" }}>
-        {flashMsg && <FlashMessage flashMsg={flashMsg} />}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <div>
-            <h4>
-              {" "}
-              <img src={HomeImg} alt="Home" /> List Cars
-            </h4>
-          </div>
-          <div>
-            <Link to={`add`}>
-              <Button
-                style={{
-                  background: "#025464",
-                }}
-                variant="primary"
-                className="btn-add"
-              >
-                + Add Car
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </Container>
+
+      {flashMsg && <FlashMessage flashMsg={flashMsg} />}
 
       {/* Card */}
       <Container className="container-card" style={{ marginTop: "20px" }}>
